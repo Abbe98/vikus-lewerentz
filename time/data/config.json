@@ -11,15 +11,15 @@
     "textures": {
       "medium": {
         "size": 128,
-        "url": "/img/sprites/spritesheet.json"
+        "url": "/vikus-lewerentz/img/sprites/spritesheet.json"
       },
       "detail": {
         "size": 1024,
-        "url": "/img/1024/"
+        "url": "/vikus-lewerentz/img/1024/"
       },
       "big": {
         "size": 4096,
-        "url": "/img/4096/"
+        "url": "/vikus-lewerentz/img/4096/"
       }
     }
   },
