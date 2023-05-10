@@ -1,0 +1,77 @@
+{
+  "project": {
+    "name": "Lewerentz",
+    "quality": 1
+ },
+  "loader": {
+    "info": "data/info.md",
+    "timeline": "data/timeline.csv",
+    "items": "data/data.csv",
+    "tsne": "data/tsne.csv",
+    "textures": {
+      "medium": {
+        "size": 128,
+        "url": "/img/sprites/spritesheet.json"
+      },
+      "detail": {
+        "size": 1024,
+        "url": "/img/1024/"
+      },
+      "big": {
+        "size": 4096,
+        "url": "/img/4096/"
+      }
+    }
+  },
+  "style": {
+    "fontColor": "#fff",
+    "fontColorActive": "#1c1e1f",
+    "fontBackground": "#fff",
+    "textShadow": "1px 1px 0px #00000085",
+    "canvasBackground": "#1c1e1f",
+    "timelineBackground": "#fff",
+    "timelineFontColor": "#000",
+    "backgroundHeader": "#035151",
+    "fontColorHeader": "#fffefa",
+    "detailBackground": "#353535",
+    "detailFontColor": "#fff",
+    "infoBackground": "#353535",
+    "infoFontColor": "#fff",
+    "searchbarBackground": "#353535",
+    "navigationButtonFontColor": "#000",
+    "navigationButtonBackground": "#ba9cc9",
+    "navigationButtonActiveFontColor": "#000",
+    "navigationButtonActiveBackground": "#ba9cc9",
+    "detailCloseButtonColor": "#fff",
+    "detailCloseButtonOpacity": 0.5,
+    "detailCloseButtonActiveOpacity": 0.6
+  },
+  "projection": {
+    "columns": 10
+  },
+  "detail": {
+    "structure": [     
+      {
+        "source": "_heading",
+        "type": "html"
+      },
+      {
+        "source": "_display_id",
+        "type": "html"
+      },
+      {
+        "source": "_description",
+        "type": "html"
+      },
+      {
+        "source": "_display_years",
+        "type": "html"
+      },
+      {
+        "source": "_display_keywords",
+        "type": "html"
+      }
+    ]
+  },
+  "sortKeywords": ["Stockholm", "Malmö", "Uppsala", "Helsingborg", "Gothenburg", "Photography", "Sketches", "Perspective", "Elevation", "Plan Drawing", "Sectional Drawing", "Detailed Drawing", "Models"]
+}

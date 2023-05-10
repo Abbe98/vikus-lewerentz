@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>VikusViewer</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="pinterest" content="nohover" />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/infobar.css" />
+    <link rel="stylesheet" href="css/timeline.css" />
+    <style>
+      /* CUSTOM ARKDES STYLES */
+      .data-button {
+        text-decoration: none;
+        color: #000 !important;
+        background: #ba9cc9;
+        padding: .5em;
+        margin-right: .3em;
+        display: inline-block;
+        margin-top: .3em;
+      }
+
+      .data-years {
+        text-align: center;
+        font-size: 130%;
+      }
+
+      .data-identifier {
+        font-family: monospace;
+      }
+
+      ::-webkit-scrollbar {
+          display: none;
+      }
+
+      .touch-overlay {
+        height: 100vh;
+        position: absolute;
+        z-index: 9999;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: tilt 2s infinite ease-in-out;
+      }
+
+      /*touch overlay annimation */
+      @keyframes tilt {
+        0% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+        100% {
+          transform: rotate(-10deg);
+        }
+      }
+
+    </style>
+
+    <script src="js/d3.v3.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/marked.min.js"></script>
+    <script src="js/lodash.min.js"></script>
+    <script src="js/pixi.min.js"></script>
+    <script src="js/pixi-packer-parser.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/tags.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/modernizr-custom.js"></script>
+    <!--[if lt IE 9]>
+      <script
+        src="http://html5shiv.googlecode.com/svn/trunk/html5.js"
+        type="text/javascript"
+      ></script>
+    <![endif]-->
+
+    <!-- 
+
+                           ,--.                                     
+               ,---,   ,--/  /|               .--.--.               
+       ,---.,`--.' |,---,': / '         ,--, /  /    '.             
+      /__./||   :  ::   : '/ /        ,'_ /||  :  /`. /             
+ ,---.;  ; |:   |  '|   '   ,    .--. |  | :;  |  |--`              
+/___/ \  | ||   :  |'   |  /   ,'_ /| :  . ||  :  ;_                
+\   ;  \ ' |'   '  ;|   ;  ;   |  ' | |  . . \  \    `.             
+ \   \  \: ||   |  |:   '   \  |  | ' |  | |  `----.   \            
+  ;   \  ' .'   :  ;|   |    ' :  | | :  ' ;  __ \  \  |            
+   \   \   '|   |  ''   : |.  \|  ; ' |  | ' /  /`--'  /            
+    \   `  ;'   :  ||   | '_\.':  | : ;  ; |'--'.     /             
+     :   \ |;   |.' '   : |    '  :  `--'   \ `--'---'              
+      '---" '---'   ;   |,'    :  ,      .-./                       
+                    '---'       `--`----'                           
+               ,---,    ,---,.           .---.    ,---,.,-.----.    
+       ,---.,`--.' |  ,'  .' |          /. ./|  ,'  .' |\    /  \   
+      /__./||   :  :,---.'   |      .--'.  ' ;,---.'   |;   :    \  
+ ,---.;  ; |:   |  '|   |   .'     /__./ \ : ||   |   .'|   | .\ :  
+/___/ \  | ||   :  |:   :  |-, .--'.  '   \' .:   :  |-,.   : |: |  
+\   ;  \ ' |'   '  ;:   |  ;/|/___/ \ |    ' ':   |  ;/||   |  \ :  
+ \   \  \: ||   |  ||   :   .';   \  \;      :|   :   .'|   : .  /  
+  ;   \  ' .'   :  ;|   |  |-, \   ;  `      ||   |  |-,;   | |  \  
+   \   \   '|   |  ''   :  ;/|  .   \    .\  ;'   :  ;/||   | ;\  \ 
+    \   `  ;'   :  ||   |    \   \   \   ' \ ||   |    \:   ' | \.' 
+     :   \ |;   |.' |   :   .'    :   '  |--" |   :   .':   : :-'   
+      '---" '---'   |   | ,'       \   \ ;    |   | ,'  |   |.'     
+                    `----'          '---"     `----'    `---'       
+                                                                    
+
+
+christopher pietsch
+cpietsch@gmail.com
+2015-2018
+
+ --></head>
+
+  <body>
+    <!--<div class="touch-overlay" onclick="this.style.display='none'"><svg enable-background="new 0 0 99.176 99.176" height="99.176px" id="Layer_1" version="1.1" viewBox="0 0 99.176 99.176" width="99.176px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><circle cx="40.444" cy="16.681" fill="#FFFFFF" r="12.306" stroke="#939598" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.3674"></circle><circle cx="40.444" cy="16.681" fill="#FFFFFF" r="9" stroke="#939598" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></circle><path d="M73.914,41.707   c-2.299,0-4.178,1.878-4.178,4.178v9.908c0,0.755-0.622,1.384-1.384,1.384c-0.779,0-1.405-0.629-1.405-1.384V41.885   c0-2.313-1.864-4.178-4.178-4.178c-2.299,0-4.174,1.864-4.174,4.178V53c0,0.766-0.629,1.384-1.388,1.384   c-0.776,0-1.405-0.618-1.405-1.384V34.74c0-2.3-1.864-4.174-4.18-4.174c-2.311,0-4.175,1.874-4.175,4.174V53   c0,0.766-0.626,1.384-1.403,1.384c-0.759,0-1.387-0.618-1.387-1.384V17.438c0-2.313-1.877-4.178-4.177-4.178   c-2.312,0-4.176,1.864-4.176,4.178v49.496l-5.65-7.732c-1.672-2.568-4.939-3.439-7.333-1.953c-2.383,1.504-2.968,4.801-1.32,7.372   c0,0,9.102,13.771,12.983,19.663c3.876,5.905,10.165,10.519,21.923,10.519c19.459,0,21.201-15.022,21.201-19.513V45.885   C78.109,43.585,76.228,41.707,73.914,41.707z" fill="#FFFFFF" stroke="#58595B" stroke-miterlimit="10" stroke-width="3.4835"></path><path d="M73.914,41.707   c-2.299,0-4.178,1.878-4.178,4.178v9.908c0,0.755-0.622,1.384-1.384,1.384c-0.779,0-1.405-0.629-1.405-1.384V41.885   c0-2.313-1.864-4.178-4.178-4.178c-2.299,0-4.174,1.864-4.174,4.178V53c0,0.766-0.629,1.384-1.388,1.384   c-0.776,0-1.405-0.618-1.405-1.384V34.74c0-2.3-1.864-4.174-4.18-4.174c-2.311,0-4.175,1.874-4.175,4.174V53   c0,0.766-0.626,1.384-1.403,1.384c-0.759,0-1.387-0.618-1.387-1.384V17.438c0-2.313-1.877-4.178-4.177-4.178   c-2.312,0-4.176,1.864-4.176,4.178v49.496l-5.65-7.732c-1.672-2.568-4.939-3.439-7.333-1.953c-2.383,1.504-2.968,4.801-1.32,7.372   c0,0,9.102,13.771,12.983,19.663c3.876,5.905,10.165,10.519,21.923,10.519c19.459,0,21.201-15.022,21.201-19.513V45.885   C78.109,43.585,76.228,41.707,73.914,41.707z" fill="#FFFFFF" stroke="#58595B" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"></path></g></svg></div>-->
+    <div id="hiddenreload"></div>
+
+    <div class="browserInfo">
+      <p>
+        This visualization is not optimized for mobile phones and needs WebGL
+        enabled.
+      </p>
+      <p>Please come back on a Computer.</p>
+      <span>💡</span>
+    </div>
+
+    <div class="search"></div>
+
+    <div class="page">
+      <div class="detailLoader"></div>
+      <div class="sideLoader"></div>
+
+      <div class="sidebar detail hide">
+        <div class="slidebutton">
+          <svg width="16px" height="24px" viewBox="0 0 16 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                <path d="M11.6824546,2 L1.7109392,11.9715154 L11.7394238,22" id="Path-2-Copy-2" stroke-width="5" sketch:type="MSShapeGroup" transform="translate(6.725182, 12.000000) rotate(-180.000000) translate(-6.725182, -12.000000) "></path>
+            </g>
+          </svg>
+        </div>
+
+        <div class="outer">
+          <div id="detail" class="inner">
+            <div class="entries" v-if="item">
+              <div v-if="item._imagenum > 1" class="entry wide pages">
+                <div class="label">Seite</div>
+                <div class="content">
+                  <span
+                    v-for="i in parseInt(item._imagenum)"
+                    v-bind:key="i"
+                    v-on:click="displayPage(i-1)"
+                    v-bind:class="{ active: i === page+1, keyword: true }"
+                  >
+                    {{ i }}
+                  </span>
+                </div>
+              </div>
+              <div
+                v-for="entry in structure"
+                v-bind:key="entry.name"
+                v-bind:class="entry.display"
+                class="entry"
+                v-if="hasData(entry)"
+              >
+                <div v-if="entry.name" class="label">{{ entry.name }}</div>
+                <div class="content">
+                  <span v-if="entry.type === 'keywords'">
+                    <span
+                      v-for="keyword in item[entry.source]"
+                      v-bind:key="keyword"
+                      class="keyword"
+                    >
+                      {{ keyword }}
+                    </span>
+                  </span>
+                  <span v-else-if="entry.type === 'link'">
+                    <a :href="item[entry.source]" target="_blank">Link</a>
+                  </span>
+                  <span v-else-if="entry.type === 'markdown'">
+                    <span v-html="getContent(entry)"></span>
+                  </span>
+                  <span v-else-if="entry.type === 'html'">
+                    <span v-html="getContent(entry)"></span>
+                  </span>
+                  <span v-else-if="entry.type === 'function'">
+                    <span v-html="getContent(entry)"></span>
+                  </span>
+                  <span v-else>
+                    {{ getContent(entry) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="navi hide">
+        <div class="time button active" data="time">box</div>
+        <div class="tsne button" data="tsne">similarity</div>
+      </div>
+
+      <div class="infobar">
+        <div class="infobutton">
+          <svg width="16px" height="24px" viewBox="0 0 16 24">
+            <path
+              d="M13.6824546,2 L3.7109392,11.9715154 L13.7394238,22"
+              stroke="#FFF"
+              stroke-width="5"
+            ></path>
+          </svg>
+        </div>
+
+        <div class="outer">
+          <div class="inner">
+            <div id="infobar" class="infosidebar">
+              <span v-html="marked(info)"></span>
+              <div class="credit">
+                Powered by
+                <a href="https://vikusviewer.fh-potsdam.de/" target="_blank"
+                  >VIKUS Viewer</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="searchbar">
+        <input type="input" name="suche" />
+        <div class="button">
+          <div class="openbutton"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/sidebars.js"></script>
+    <script src="js/viz.js"></script>
+  </body>
+</html>
